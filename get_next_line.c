@@ -6,50 +6,39 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 11:01:52 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/11/27 15:39:15 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/11/27 17:40:01 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 static t_list	**lout;
 
-static char		*ft_read(int const fd)
+static char		*ft_read(int const fd, char *str)
 {
 	int		ret;
-	char	*str;
 	char	*tmp;
 	char	buf[BUFF_SIZE];
+	int		i;
 
-	str = ft_strnew(1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0) //For EOF
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
 		tmp = str;
-		str = ft_strnew(ft_strlen(str) + ft_strlen(buf));
+		if (!(str = ft_strnew(ft_strlen(str) + ft_strlen(buf))))
+			return (NULL);
 		ft_strcpy(str, tmp);
 		ft_strcat(str, buf);
 		free(tmp);
-		if (seek_endl(str) == 1)
+		i = -1;
+		while (s[++i])						//seek_endl
 		{
-			str = cut_str(fd, str);
-			break ;
+			if (s[i] == '\n')
+				return (cut_str(fd, str));
 		}
 	}
 	if (ret == (-1))
 		return ("ERROR");
 	if (ret == (0))
-		return ("EOF");
-	return (str);
-}
-
-static int		seek_endl(char *s)
-{
-	while (*s)
-	{
-		if (*s == '\n')
-			return (1);
-		s++;
-	}
-	return (0);
+		return (str);
 }
 
 static char		*cut_str(int const fd, char *s)
@@ -64,7 +53,8 @@ static char		*cut_str(int const fd, char *s)
 		if (s[i] == '\n')
 		{
 			tmp = s;
-			s = ft_strnew(ft_strlen_ch(s, '\n'));
+			if(!(s = ft_strnew(ft_strlen_ch(s, '\n'))))
+				return (NULL);
 			ft_strncpy(s, tmp, i /*- 1*/);
 			tmp = ft_strchr(tmp, '\n');
 			CAST(out)->sout = ft_strnew(ft_strlen(tmp));
@@ -78,12 +68,38 @@ static char		*cut_str(int const fd, char *s)
 	return (str);
 }
 
+static int		egalegal(int fdout, int fd)
+{
+	if (fdout == fd)
+		return (0);
+	return (1);
+}
+
+static char		*str_link(int const fd, t_list **lout, char *str)
+{
+	t_list	*matchlst;
+
+	if (!(matchlist = ft_lstfind(*lout, fd, egalegal)))
+		return (NULL);
+	if (!(str = ft_strnew(ft_strlen(CAST(matchlist)->sout))))
+		return (NULL);
+	str = strcpy(str, CAST(matchlist)->sout);
+	return (str);
+}
+
 int				get_next_line(int const fd, char **line)
 {
+	char	*str;
+
+	str = str_link(fd, lout, str);
+	str = ft_read(fd, str);
 
 	if (ft_strcmp(str, "ERROR") == 0)
 		return (-1);
-	else if (ft_strcmp(str, "EOF") == 0)
-		return (0);
+//	else if (ft_strcmp(str, "EOF") == 0)
+//		return (0);
+	while (**line)
+		*line++;
+	*line = str;
 	return (1);
 }
