@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 11:01:52 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/11/27 17:40:01 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/11/30 10:04:03 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,17 @@ static int		egalegal(int fdout, int fd)
 static char		*str_link(int const fd, t_list **lout, char *str)
 {
 	t_list	*matchlst;
+	int		i;
 
 	if (!(matchlist = ft_lstfind(*lout, fd, egalegal)))
 		return (NULL);
-	if (!(str = ft_strnew(ft_strlen(CAST(matchlist)->sout))))
+	i = 0;
+	while ((CAST(matchlist)->sout)[i] != '\n')
+		i++;
+	if (!(str = ft_strnew(ft_strlen(i))))
 		return (NULL);
-	str = strcpy(str, CAST(matchlist)->sout);
+	str = strncpy(str, CAST(matchlist)->sout, i);
+	CAST(matchlist)->sout += i;
 	return (str);
 }
 
