@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 10:48:00 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/11/27 15:32:01 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/11/30 18:46:17 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 
 int					get_next_line(int const fd, char **line);
 
-typedef struct		s_dout
+typedef struct		s_out
 {
 	int const		fdout;
-	char			*sout;
-}					t_dout;
+	char			*bufout;
+	char			*cursor;
+}					t_out;
 
 
 
