@@ -6,31 +6,41 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/11/30 21:15:46 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/01 17:30:51 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-static t_list	*fd_lst(int const fd, t_list **lout)
+static t_out	*fd_lst(int const fd, t_list **headptr)
 {
-	t_list	*nout;
-	t_out	*tmp;
+	t_list	*it;
+	t_list	*node;
+	t_out	contentnew;
 
-	while ((*lout)->next)
+	it = *headptr;
+//	ft_putstr("test fd_lst 1 \n");
+	while (it)
 	{
-		if (CAST(*lout)->fdout == (int)fd)
-			return (*lout);
-		*lout = (*lout)->next;
+//	ft_putstr("test fd_lst boucle \n");
+		if (CONTENT(it)->fdout == fd)
+			return (CONTENT(it));
+		it = it->next;
 	}
-	if (!(nout = ft_lstnew(tmp, sizeof(t_out))))
+	//creation du content du node
+	contentnew.fdout = fd;
+//	contentnew.bufout = ft_strnew(BUFF_SIZE);
+	contentnew.bufout = ft_strdup("yolo");
+	contentnew.cursor = contentnew.bufout;
+
+	if (!(node = ft_lstnew(&contentnew, sizeof(t_out))))
+	{
+		free(contentnew.bufout);
 		return (NULL);
-	CAST(nout).fdout = fd;
-	CAST(nout)->bufout = NULL;
-	CAST(nout)->cursor = CAST(nout)->bufout;
-	ft_lstadd(lout, nout);
-	return (*lout);
+	}
+	ft_lstadd(headptr, node);
+	return (CONTENT(node));
 }
 
 static int		rd_lst(t_out *lout, char **line)
@@ -38,7 +48,7 @@ static int		rd_lst(t_out *lout, char **line)
 	if ((lout->cursor = ft_strchr(lout->bufout, '\n')))
 	{
 		*(lout->cursor) = 0;
-		if(!(*line = ft_strdup(lout->bufout)))
+		if (!(*line = ft_strdup(lout->bufout)))
 			return (-1);
 		lout->bufout = ft_strcpy(lout->bufout, lout->cursor);
 		lout->cursor = lout->bufout;
@@ -73,27 +83,35 @@ static int		rd_fd(int const fd, char **line, t_out *lout)
 				return (-1);
 			*tmp = 0;
 			if (!(*line = ft_strjoin(*line, str)))
-			   return (-1);	
+				return (-1);
 		}
 	}
 	return (ret);
 }
 
-int			get_next_line(int const fd, char **line)
+int				get_next_line(int const fd, char **line)
 {
-	static t_list	**lout = NULL;
+	static t_list	*head = NULL;
+	t_out			*out;
 	int				i;
 
-	if(!(*lout = fd_lst(fd, lout)))
+	ft_putstr("test gnl \n");
+	if (!(out = fd_lst(fd, &head)))
 		return (-1);
-	if ((i = rd_lst(CAST(*lout), line)) == -1)
+	ft_putnbr(out->fdout);
+	ft_putchar('\n');
+	ft_putendl(out->bufout);
+	ft_putendl(out->cursor);
+/*	if ((i = rd_lst(CONTENT(*lout), line)) == -1)
 		return (-1);
 	else if (i == 1)
 		return (1);
-	if ((i = rd_fd(fd, line, CAST(*lout))))
+	if ((i = rd_fd(fd, line, CONTENT(*lout))))
 		return (0);
 	else if (i == 1)
 		return (1);
 	else if (i == -1)
 		return (-1);
+	return (-1);*/
+	return (0);
 }

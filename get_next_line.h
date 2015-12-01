@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 10:48:00 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/11/30 21:13:27 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/01 16:45:18 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define _GET_NEXT_LINE_H
 
 # define BUFF_SIZE			32
-# define CAST(x)			((t_out*)(x)->content)
+# define CONTENT(x)			((t_out*)(x)->content)
 
 int					get_next_line(int const fd, char **line);
 
