@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 15:55:01 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/01 17:10:34 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/01 18:19:26 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ int		main(int ac, char **av)
 		fd = open(av[i], O_RDONLY);
 		if (fd == -1)
 			{i++; continue ;}
- 		get_next_line(fd, &line);
- 		get_next_line(fd, &line);
+ 		resgnl = get_next_line(fd, &line);
+		ft_putnbr(resgnl);
+		ft_putchar('\n');
+		ft_putstr(line);
+// 		get_next_line(fd, &line);
 		i++;
 	/*	
 		while ((resgnl = get_next_line(fd, &line)) >= 0)
 		{
-			ft_putnbr(resgnl);
-			ft_putstr(line[i]);
 			i++;
 		}*/
 	}

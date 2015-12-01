@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/01 17:30:51 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/01 18:30:34 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 	t_out	contentnew;
 
 	it = *headptr;
-//	ft_putstr("test fd_lst 1 \n");
+	//	ft_putstr("test fd_lst 1 \n");
 	while (it)
 	{
-//	ft_putstr("test fd_lst boucle \n");
+		//	ft_putstr("test fd_lst boucle \n");
 		if (CONTENT(it)->fdout == fd)
 			return (CONTENT(it));
 		it = it->next;
 	}
 	//creation du content du node
 	contentnew.fdout = fd;
-//	contentnew.bufout = ft_strnew(BUFF_SIZE);
-	contentnew.bufout = ft_strdup("yolo");
+	//	contentnew.bufout = ft_strnew(BUFF_SIZE);
+	contentnew.bufout = ft_strdup("yo\nlo");
 	contentnew.cursor = contentnew.bufout;
 
 	if (!(node = ft_lstnew(&contentnew, sizeof(t_out))))
@@ -43,24 +43,27 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 	return (CONTENT(node));
 }
 
-static int		rd_lst(t_out *lout, char **line)
+static int		rd_lst(t_out *out, char **line)
 {
-	if ((lout->cursor = ft_strchr(lout->bufout, '\n')))
+	if (*(out->bufout))
 	{
-		*(lout->cursor) = 0;
-		if (!(*line = ft_strdup(lout->bufout)))
-			return (-1);
-		lout->bufout = ft_strcpy(lout->bufout, lout->cursor);
-		lout->cursor = lout->bufout;
-		return (1);
+		if ((out->cursor = ft_strchr(out->bufout, '\n')))
+		{
+			*(out->cursor) = 0;
+			if (!(*line = ft_strdup(out->bufout)))
+				return (-1);
+			out->bufout = ft_strcpy(out->bufout, out->cursor);
+			out->cursor = out->bufout;
+			return (1);
+		}
+		else
+		{
+			if (!(*line = ft_strdup(out->bufout)))
+				return (-1);
+			*(out->bufout) = 0;
+		}
 	}
-	else
-	{
-		if (!(*line = ft_strdup(lout->bufout)))
-			return (-1);
-		*(lout->bufout) = 0;
-		return (0);
-	}
+	return (0);
 }
 
 static int		rd_fd(int const fd, char **line, t_out *lout)
@@ -98,20 +101,22 @@ int				get_next_line(int const fd, char **line)
 	ft_putstr("test gnl \n");
 	if (!(out = fd_lst(fd, &head)))
 		return (-1);
+	ft_putendl("Output fd_lst");
 	ft_putnbr(out->fdout);
 	ft_putchar('\n');
 	ft_putendl(out->bufout);
 	ft_putendl(out->cursor);
-/*	if ((i = rd_lst(CONTENT(*lout), line)) == -1)
+	ft_putendl("Output rd_lst");
+	if ((i = rd_lst(out, line)) == -1)
 		return (-1);
 	else if (i == 1)
 		return (1);
-	if ((i = rd_fd(fd, line, CONTENT(*lout))))
+	/*if ((i = rd_fd(fd, line, CONTENT(*lout))))
 		return (0);
-	else if (i == 1)
+		else if (i == 1)
 		return (1);
-	else if (i == -1)
+		else if (i == -1)
 		return (-1);
-	return (-1);*/
+		return (-1);*/
 	return (0);
 }
