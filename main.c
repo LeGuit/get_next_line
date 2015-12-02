@@ -6,65 +6,39 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 15:55:01 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 20:06:55 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 22:35:29 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "get_next_line.h"
 #include "libft/libft.h"
-
+#include <stdio.h>
 int		main(int ac, char **av)
 {
-	int		fd;
-	int		resgnl;
+	int		fd[10] = {0};
+	int		ret;
 	int		i;
 	char	*line;
-
+	int		j;
 	line = NULL;
-	i = 1;
+	if (ac < 2)
+		return (0);
+	i = 0;
 	while (i < ac)
 	{
-		fd = open(av[i], O_RDONLY);
-		ft_putstr("fd : ");
-		ft_putnbr(fd);
-		ft_putchar('\n');
-		if (fd == -1)
-			{i++; continue ;}
- 	/*	resgnl = get_next_line(fd, &line);
-		ft_putnbr(resgnl);
-		ft_putchar('\n');
-		ft_putstr("gnl : ");
-		ft_putstr(line);
-		ft_putchar('\n');
- 		resgnl = get_next_line(fd, &line);
-		ft_putnbr(resgnl);
-		ft_putchar('\n');
-		ft_putstr("gnl : ");
-		ft_putstr(line);
-		ft_putchar('\n');
- 		resgnl = get_next_line(fd, &line);
-		ft_putnbr(resgnl);
-		ft_putchar('\n');
-		ft_putstr("gnl : ");
-		ft_putstr(line);
-		ft_putchar('\n');*/
-		while ((resgnl = get_next_line(fd, &line)) > 0)
-		{
-		ft_putnbr(resgnl);
-		ft_putstr(line);
-		ft_putchar('\n');
-		free(line);
-		}
+		fd[i] = open(av[i + 1], O_RDONLY);
 		i++;
-//		ft_putnbr(resgnl);
-//		ft_putstr(line);
-	//	(resgnl = get_next_line(fd, &line));
-	//	ft_putnbr(resgnl);
-	//	ft_putstr(line);
+	}
+	i = 0;
+	j = 15;
+	while (j-- > 0)
+	{
+		ret = get_next_line(fd[i], &line);
+		printf("%d :%d: %d: %s\n",j, fd[i], ret, line);
+		i = (i + 1) % (ac - 1);
+		free(line);
 	}
 	ft_putchar('\n');
-	while (1)
-		;
 	return (0);
 }

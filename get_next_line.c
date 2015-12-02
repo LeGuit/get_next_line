@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 21:26:57 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 22:21:37 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 	}
 	contentnew.fdout = fd;
 	contentnew.bufout = ft_strnew(BUFF_SIZE);
-	contentnew.cursor = contentnew.bufout;
 	if (!(node = ft_lstnew(&contentnew, sizeof(t_out))))
 	{
 		free(contentnew.bufout);
@@ -41,24 +40,21 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 static int		rd_lst(t_out *out, char **line)
 {
 	char	*tmp;
+	char	*cursor;
 
 	if (!*(out->bufout))
 		return (0);
-	if ((out->cursor = ft_strchr(out->bufout, '\n')))
-	{
-		*(out->cursor) = 0;
-		if (!(*line = ft_strjoin(*line, out->bufout)))
-			return (-1);
-		out->bufout = ft_strcpy(out->bufout, (out->cursor) + 1);
-		out->cursor = out->bufout;
-		return (1);
-	}
+	if (!(cursor = ft_strchr(out->bufout, '\n')))
+		cursor = out->bufout + BUFF_SIZE;
+	*cursor = 0;
 	tmp = *line;
-	if (!(*line = ft_strjoin(*line, out->bufout)))
+	if (!(*line = ft_strjoin(tmp, out->bufout)))
 		return (-1);
 	free(tmp);
-	*(out->bufout) = 0;
-	return (0);
+	ft_strcpy(out->bufout, cursor + 1);
+	if (out->bufout + BUFF_SIZE == cursor)
+		return (0);
+	return (1);
 }
 
 static int		rd_fd(int const fd, char **line, t_out *out)
@@ -68,8 +64,9 @@ static int		rd_fd(int const fd, char **line, t_out *out)
 	while ((ret = read(fd, out->bufout, BUFF_SIZE)) > 0)
 	{
 		(out->bufout)[ret] = 0;
-		if (rd_lst(out, line) == 1)
-			return (1);
+		ret = rd_lst(out, line);
+		if (ret)
+			return (ret);
 	}
 	return (ret);
 }
