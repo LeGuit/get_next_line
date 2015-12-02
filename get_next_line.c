@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 12:08:30 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 13:09:00 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 	t_out	contentnew;
 
 	it = *headptr;
-	//	ft_putstr("test fd_lst 1 \n");
 	while (it)
 	{
-		//	ft_putstr("test fd_lst boucle \n");
 		if (CONTENT(it)->fdout == fd)
 			return (CONTENT(it));
 		it = it->next;
@@ -51,23 +49,31 @@ static int		rd_lst(t_out *out, char **line)
 {
 	if (*(out->bufout))
 	{
+	//ft_putendl("cursor before seek \\n : ");
+	//ft_putendl(out->cursor);
 		if ((out->cursor = ft_strchr(out->bufout, '\n')))
 		{
+	//ft_putendl("cursor on \\n : ");
+	//ft_putendl(out->cursor);
 			*(out->cursor) = 0;
 			if (!(*line = ft_strdup(out->bufout)))
 				return (-1);
-	ft_putstr("Aff line rd_lst \\n : ");
-	ft_putendl(*line);
-			out->bufout = ft_strcpy(out->bufout, out->cursor);
+	//ft_putstr("Aff line rd_lst \\n : ");
+	//ft_putendl(*line);
+			out->bufout = ft_strcpy(out->bufout, (out->cursor) + 1);
+	//ft_putendl("bufout after rdlist : ");
+	//ft_putendl(out->bufout);
 			out->cursor = out->bufout;
+	//ft_putendl("cursor after rdlist : ");
+	//ft_putendl(out->cursor);
 			return (1);
 		}
 		else
 		{
 			if (!(*line = ft_strdup(out->bufout)))
 				return (-1);
-	ft_putstr("Aff line rd_lst no \\n : ");
-	ft_putendl(*line);
+	//ft_putstr("Aff line rd_lst no \\n : ");
+	//ft_putendl(*line);
 			*(out->bufout) = 0;
 		}
 	}
@@ -81,7 +87,7 @@ static int		rd_fd(int const fd, char **line, t_out *out)
 	char	*str;
 	char	*tmp;
 
-	ft_putendl("Output rd_fd");
+	//ft_putendl("Output rd_fd");
 	if (!(str = ft_strdup("\0")))
 		return (-1);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
@@ -89,29 +95,30 @@ static int		rd_fd(int const fd, char **line, t_out *out)
 		buf[ret] = 0;
 		if (!(str = ft_strjoin(str, buf)))
 			return (-1);
-		ft_putchar('\n');
-		ft_putstr("Buffer : ");
-		ft_putendl(buf);
-		ft_putstr("str join with buf : ");
-		ft_putendl(str);
+		//ft_putchar('\n');
+		//ft_putstr("Buffer : ");
+		//ft_putendl(buf);
+		//ft_putstr("str join with buf : ");
+		//ft_putendl(str);
 		tmp = str;
 		if ((tmp = ft_strchr(tmp, '\n')))
 		{
 			if (!(out->bufout = ft_strjoin(out->bufout, tmp + 1)))
 				return (-1);
-		ft_putstr("bufout if \\n ");
-		ft_putendl(out->bufout);
+		//ft_putendl("bufout if \\n : ");
+		//ft_putendl(out->bufout);
 			out->cursor = out->bufout;
-		ft_putendl(out->cursor);
+		//ft_putendl("cursor if \\n : ");
+		//ft_putendl(out->cursor);
 			*tmp = '\0';
-		ft_putstr("str if \\n : ");
-		ft_putendl(str);
+		//ft_putendl("str if \\n : ");
+		//ft_putendl(str);
 			if (!(*line = ft_strjoin(*line, str)))
 				return (-1);
-		ft_putstr("str if \\n : ");
-		ft_putendl(str);
-		ft_putstr("line if \\n : ");
-		ft_putendl(*line);
+		//ft_putstr("str if \\n : ");
+		//ft_putendl(str);
+		//ft_putstr("line if \\n : ");
+		//ft_putendl(*line);
 		return (1);
 		}
 	}
@@ -124,15 +131,17 @@ int				get_next_line(int const fd, char **line)
 	t_out			*out;
 	int				i;
 
-	ft_putstr("test gnl \n");
+	//ft_putstr("test gnl \n");
 	if (!(out = fd_lst(fd, &head)))
 		return (-1);
-	ft_putendl("Output fd_lst");
-	ft_putnbr(out->fdout);
-	ft_putchar('\n');
-	ft_putendl(out->bufout);
-	ft_putendl(out->cursor);
-	ft_putendl("Output rd_lst");
+	//ft_putendl("Output fd_lst");
+	//ft_putnbr(out->fdout);
+	//ft_putchar('\n');
+	//ft_putendl("Bufout : ");
+	//ft_putendl(out->bufout);
+	//ft_putendl("Cursor : ");
+	//ft_putendl(out->cursor);
+	//ft_putendl("Output rd_lst");
 	if ((i = rd_lst(out, line)) == -1)
 		return (-1);
 	else if (i == 1)
