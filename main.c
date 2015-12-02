@@ -6,13 +6,13 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 15:55:01 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 22:35:29 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 23:07:47 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "get_next_line.h"
-#include "libft/libft.h"
+#include "libft/includes/libft.h"
 #include <stdio.h>
 int		main(int ac, char **av)
 {

@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 10:48:00 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 22:24:26 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 23:07:09 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # define BUFF_SIZE			3
 # define CONTENT(x)			((t_out*)(x)->content)
+
+#include "libft/includes/libft.h"
 
 int					get_next_line(int const fd, char **line);
 

@@ -6,11 +6,10 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 22:21:37 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 23:07:19 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "get_next_line.h"
 
 static t_out	*fd_lst(int const fd, t_list **headptr)
