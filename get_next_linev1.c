@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 19:26:50 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 19:15:11 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 		it = it->next;
 	}
 	contentnew.fdout = fd;
-	contentnew.bufout = ft_strnew(BUFF_SIZE);
+	if (!(contentnew.bufout = ft_strnew(BUFF_SIZE)))
+		return (1);
 	contentnew.cursor = contentnew.bufout;
 	if (!(node = ft_lstnew(&contentnew, sizeof(t_out))))
 	{
@@ -45,9 +46,7 @@ static int		rd_lst(t_out *out, char **line)
 		if ((out->cursor = ft_strchr(out->bufout, '\n')))
 		{
 			*(out->cursor) = 0;
-//			if (!(*line = ft_strdup(out->bufout)))
-//				return (-1);
-			if (!(*line = ft_strjoin(*line, out->bufout)))
+			if (!(*line = ft_strdup(out->bufout)))
 				return (-1);
 			out->bufout = ft_strcpy(out->bufout, (out->cursor) + 1);
 			out->cursor = out->bufout;
@@ -55,35 +54,31 @@ static int		rd_lst(t_out *out, char **line)
 		}
 		else
 		{
-//			if (!(*line = ft_strdup(out->bufout)))
-//				return (-1);
-			if (!(*line = ft_strjoin(*line, out->bufout)))
+			if (!(*line = ft_strdup(out->bufout)))
 				return (-1);
 			*(out->bufout) = 0;
 			return (0);
 		}
 	}
-//	*line = ft_strdup("\0");
+	*line = ft_strdup("\0");
 	return (0);
 }
 
 static int		rd_fd(int const fd, char **line, t_out *out)
 {
 	int		ret;
-//	char	buf[BUFF_SIZE];
-//	char	*str;
-//	char	*tmp;
+	char	buf[BUFF_SIZE];
+	char	*str;
+	char	*tmp;
 
-//	if (!(str = ft_strdup("\0")))
-//		return (-1);
-//
-	while ((ret = read(fd, out->bufout, BUFF_SIZE)) > 0)
+	if (!(str = ft_strdup("\0")))
+		return (-1);
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		(out->bufout)[ret] = 0;
-//		if (!(str = ft_strjoin(str, buf)))
-//			return (-1);
-//		tmp = str;
-/*
+		buf[ret] = 0;
+		if (!(str = ft_strjoin(str, buf)))
+			return (-1);
+		tmp = str;
 		if ((tmp = ft_strchr(tmp, '\n')))
 		{
 			if (!(out->bufout = ft_strjoin(out->bufout, tmp + 1)))
@@ -94,14 +89,9 @@ static int		rd_fd(int const fd, char **line, t_out *out)
 				return (-1);
 			return (1);
 		}
-*/
-// TEST
-//
-		if (rd_lst(out, line) == 1)
-			return (1);	
 	}
-//	if (!(*line = ft_strjoin(*line, str)))
-//		return (-1);
+	if (!(*line = ft_strjoin(*line, str)))
+		return (-1);
 	return (ret);
 }
 
@@ -111,7 +101,6 @@ int				get_next_line(int const fd, char **line)
 	t_out			*out;
 	int				i;
 
-	*line = 0;
 	if (fd < 0 || !line)
 		return (-1);
 	if (!(out = fd_lst(fd, &head)))
