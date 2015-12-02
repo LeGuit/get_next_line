@@ -6,14 +6,14 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 10:48:00 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 18:54:40 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 19:30:30 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _GET_NEXT_LINE_H
 # define _GET_NEXT_LINE_H
 
-# define BUFF_SIZE			319
+# define BUFF_SIZE			20000
 # define CONTENT(x)			((t_out*)(x)->content)
 
 int					get_next_line(int const fd, char **line);

@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 15:55:01 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 19:15:49 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 19:39:13 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ int		main(int ac, char **av)
 		ft_putnbr(resgnl);
 		ft_putstr(line);
 		ft_putchar('\n');
+		free(line);
 		}
 		i++;
-		ft_putnbr(resgnl);
-		ft_putstr(line);
-		(resgnl = get_next_line(fd, &line));
-		ft_putnbr(resgnl);
-		ft_putstr(line);
-		free(line);
+//		ft_putnbr(resgnl);
+//		ft_putstr(line);
+	//	(resgnl = get_next_line(fd, &line));
+	//	ft_putnbr(resgnl);
+	//	ft_putstr(line);
 	}
 	ft_putchar('\n');
-//	while (1)
-//		;
+	while (1)
+		;
 	return (0);
 }
