@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 14:58:33 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 16:32:55 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ static int		rd_lst(t_out *out, char **line)
 			if (!(*line = ft_strdup(out->bufout)))
 				return (-1);
 			*(out->bufout) = 0;
+			return (0);
 		}
 	}
+	*line = ft_strdup("\0");
 	return (0);
 }
 
@@ -87,8 +89,6 @@ static int		rd_fd(int const fd, char **line, t_out *out)
 			return (1);
 		}
 	}
-	if (!(*line = ft_strjoin(*line, str)))
-		return (-1);
 	return (ret);
 }
 
@@ -106,8 +106,10 @@ int				get_next_line(int const fd, char **line)
 		return (1);
 	if ((i = rd_fd(fd, line, out)))
 		return (1);
-	else if (i == 0)
+	 if (i == 0)
+	{
 		return (0);
+	}
 	else if (i == -1)
 		return (-1);
 	return (0);
