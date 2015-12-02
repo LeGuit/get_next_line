@@ -6,7 +6,7 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 16:32:55 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/02 17:18:51 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,18 @@ int				get_next_line(int const fd, char **line)
 	t_out			*out;
 	int				i;
 
+	if (fd < 0 || !line)
+		return (-1);
 	if (!(out = fd_lst(fd, &head)))
 		return (-1);
 	if ((i = rd_lst(out, line)) == -1)
 		return (-1);
 	else if (i == 1)
 		return (1);
-	if ((i = rd_fd(fd, line, out)))
+	if ((i = rd_fd(fd, line, out)) > 0)
 		return (1);
-	 if (i == 0)
-	{
+	else if (i == 0)
 		return (0);
-	}
 	else if (i == -1)
 		return (-1);
 	return (0);
