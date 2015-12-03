@@ -6,13 +6,13 @@
 /*   By: gwoodwar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 17:58:58 by gwoodwar          #+#    #+#             */
-/*   Updated: 2015/12/02 23:07:19 by gwoodwar         ###   ########.fr       */
+/*   Updated: 2015/12/03 10:55:27 by gwoodwar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static t_out	*fd_lst(int const fd, t_list **headptr)
+static t_out	*seek_fd(int const fd, t_list **headptr)
 {
 	t_list	*it;
 	t_list	*node;
@@ -36,7 +36,7 @@ static t_out	*fd_lst(int const fd, t_list **headptr)
 	return (CONTENT(node));
 }
 
-static int		rd_lst(t_out *out, char **line)
+static int		fetch_in_buffer(t_out *out, char **line)
 {
 	char	*tmp;
 	char	*cursor;
@@ -56,14 +56,14 @@ static int		rd_lst(t_out *out, char **line)
 	return (1);
 }
 
-static int		rd_fd(int const fd, char **line, t_out *out)
+static int		read_in_fd(int const fd, char **line, t_out *out)
 {
 	int		ret;
 
 	while ((ret = read(fd, out->bufout, BUFF_SIZE)) > 0)
 	{
 		(out->bufout)[ret] = 0;
-		ret = rd_lst(out, line);
+		ret = fetch_in_buffer(out, line);
 		if (ret)
 			return (ret);
 	}
@@ -79,10 +79,10 @@ int				get_next_line(int const fd, char **line)
 	if (fd < 0 || !line || BUFF_SIZE < 1)
 		return (-1);
 	*line = 0;
-	if (!(out = fd_lst(fd, &head)))
+	if (!(out = seek_fd(fd, &head)))
 		return (-1);
-	if ((ret = rd_lst(out, line)))
+	if ((ret = fetch_in_buffer(out, line)))
 		return (ret);
-	ret = rd_fd(fd, line, out);
+	ret = read_in_fd(fd, line, out);
 	return (ret);
 }
